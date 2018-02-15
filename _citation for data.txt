@@ -1,0 +1,11 @@
+DeBruine, L.. (2016, October 24). 
+Young adult composite faces. figshare. 
+
+
+https://doi.org/10.6084/m9.figshare.4055130.v1
+
+https://pdfs.semanticscholar.org/d78b/6a5b0dcaa81b1faea5fb0000045a62513567.pdf
+
+
+
+python facial_landmarks.py --shape-predictor shape_predictor_68_face_landmarks.dat --image images/m_multi.jpg
