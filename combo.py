@@ -1,8 +1,11 @@
 #Code by Reday Yahya
-#02/02/2018
+#23/02/2018
 #Facial Landmark detection using OpenCV, DLIB with added help of imageutilities by pyimageresearch
+#IMG hotfix, Fixes image input for accurate results
 
 #Packages needed (IMUTILS by pyimageresearch to install = pip install imutils)
+from imutils.face_utils import FaceAligner
+from imutils.face_utils import rect_to_bb
 from imutils import face_utils
 import numpy as np
 import argparse
@@ -10,26 +13,39 @@ import imutils
 import dlib
 import cv2
 
-#Cunstructing the argument parser for CL
 ap = argparse.ArgumentParser()
 
 #DLIB's trained facial Landmark detector
 ap.add_argument("-p", "--shape-predictor", required = True,
-    help = "path to Facial landmark predictor")
+help = "path to Facial landmark predictor")
 
 #Path to Image we want to use to analyse (can use live feed too)
 ap.add_argument("-i", "--image", required = True,
-    help = "path to input image")
+help = "path to input image")
 
 args = vars(ap.parse_args())
 
 #DLIB face detectore with facial landmark predictor
 detector = dlib.get_frontal_face_detector()
 predictor = dlib.shape_predictor(args["shape_predictor"])
+fa = FaceAligner(predictor, desiredFaceWidth=256)
 
-#Detect face with openCV
-image = cv2.imread(args["image"])
-image = imutils.resize(image, width = 500)
+#Load Input
+al_image = cv2.imread(args["image"])
+al_image = imutils.resize(al_image, width = 800)
+al_gray = cv2.cvtColor(al_image, cv2.COLOR_BGR2GRAY)
+al_rects = detector(al_gray, 2)
+
+# loop over the face detections
+for rect in al_rects:
+	
+	#Format Conversion DLIB and openCV, store new image in faceAligned
+	(x, y, w, h) = rect_to_bb(rect)
+	faceAligned = fa.align(al_image, al_gray, rect)
+ 
+
+#now that we have the fixed image, lets get our facial landmarks
+image = faceAligned
 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 rects = detector(gray, 1)
 
@@ -37,16 +53,16 @@ rects = detector(gray, 1)
 for (i, rect) in enumerate(rects):
 	shape = predictor(gray, rect)
 	shape = face_utils.shape_to_np(shape)
-	
-    for (name, (i, j)) in face_utils.FACIAL_LANDMARKS_IDX.items():
-        clone = image.copy()
-        cv2.putText(clone, name, (10, 30), cv2.FONT_HERSHEY_SIMPLEX,
-            0.7, (0, 0, 255), 2)
 
     #Looping over the coordinates for the facial landmarks and display them on image
-	for (x, y) in shape[i:j]:
-		cv2.circle(clone, (x, y), 1, (0, 0, 255), -1)
+	for (x, y) in shape:
+		cv2.circle(image, (x, y), 1, (0, 0, 255), -1)
+
 
 #Output
+np.savetxt("output.txt", shape)
+y = np.loadtxt("output.txt")
+print(y)
 cv2.imshow("Output", image)
+
 cv2.waitKey(0)

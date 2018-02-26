@@ -38,15 +38,11 @@ for (i, rect) in enumerate(rects):
 	shape = predictor(gray, rect)
 	shape = face_utils.shape_to_np(shape)
 	
-        #Converting DLIB's rectange to OpenCV style
+    #Converting DLIB's rectange to OpenCV style
 	(x, y, w, h) = face_utils.rect_to_bb(rect)
 	cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
-        #Mutli Face Count and Output //-Might not need remove possibly
-	cv2.putText(image, "Face #{}".format(i + 1), (x - 10, y - 10),
-		cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
-
-        #Looping over the coordinates for the facial landmarks and display them on image
+    #Looping over the coordinates for the facial landmarks and display them on image
 	for (x, y) in shape:
 		cv2.circle(image, (x, y), 1, (0, 0, 255), -1)
 
