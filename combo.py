@@ -62,7 +62,9 @@ for (i, rect) in enumerate(rects):
 #Output
 np.savetxt("output.txt", shape)
 y = np.loadtxt("output.txt")
-print(y)
+std_mean = np.std(y)
+print(std_mean)
+
 cv2.imshow("Output", image)
 
 cv2.waitKey(0)
