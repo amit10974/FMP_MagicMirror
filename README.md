@@ -30,9 +30,9 @@ ______________________________________________________________________________
 
 Packages Required to run this on Windows:
 
-openCV2
-dlib
-imutils
+- openCV2
+- dlib
+- imutils
 
 *I suggest to use conda and pip to install required packages, also compile above Python 3.4
 ___________________________________________________________________________
