@@ -17,7 +17,7 @@ def getFaceCord( input_image, output_file ):
 
 
     #DLIB face detectore with facial landmark predictor
-    os.chdir("/home/pi/Desktop/facial-landmarks/")
+    # os.chdir("FMP_MagicMirror/")
     detector = dlib.get_frontal_face_detector()
     predictor = dlib.shape_predictor("facerec.dat")
     fa = FaceAligner(predictor, desiredFaceWidth=256)
@@ -56,6 +56,7 @@ def getFaceCord( input_image, output_file ):
 
     print("Table of Coordinates ")
     print(out_coord)
+    print("")
 
 
 

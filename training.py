@@ -10,8 +10,8 @@ import os
 import statistics
 
 #Source Location
-source_img = os.listdir("/home/pi/Desktop/facial-landmarks/Material/attr/")
-source_path = "/home/pi/Desktop/facial-landmarks/Material/attr/"
+source_img = os.listdir("Material/attr/")
+source_path = "Material/attr/"
 ctr = "0"
 
 #Collective Array of Coordinates from all Images distrubuted
@@ -36,11 +36,13 @@ for i in range(sub_length):
     x_arr.append(tmp_x)
     y_arr.append(tmp_y)
     
-#Devug Output of Sorted Coordinate array. Sorted for the facial Landmarks Markup 68 locations
-# print("X Array")
-# print(x_arr)
-# print("Y Array")
-# print(y_arr)
+#Debug Output of Sorted Coordinate array. Sorted for the facial Landmarks Markup 68 locations
+print("")
+print("X Array")
+print(x_arr)
+print("")
+print("Y Array")
+print(y_arr)
 
 
 #Collection of Learned Data
@@ -64,6 +66,7 @@ for x in y_arr:
 	average_vari_y.append(statistics.variance(x))
 
 #Output
+print("")
 print("STDEV for X coordinates")
 print(average_sd_x)
 print(" ")
