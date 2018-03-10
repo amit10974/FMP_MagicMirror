@@ -39,19 +39,18 @@ ___________________________________________________________________________
 
 Libraries Included:
 
-OPENCV
-DLIB
-imutils pyvisionresearch
-MagicMirrorFramework
-raspberry pi camera module
+- openCV2
+- dlib
+- imutils pyimageresearch
+- MagicMirrorFramework
+
 ______________________________________________________________________________
 
 Research based various Journal Papers:
 
-pyimageresearch
-Project Proposal
-Description
-Literature Review
-Hardware Specification Documentation
+- pyimageresearch
+- Project Proposal
+- Literature Review
+- Hardware Specification Documentation
 
-all by Reday Yahya, will be available soon.
+Documents made by Me and pyimageresearch
