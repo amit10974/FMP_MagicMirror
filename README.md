@@ -8,7 +8,7 @@ Core Function:
 
 - Capture Face
 - Calculate Facial landmarks
-- Compare against Attractive DB Data
+- Compare against Attractive Dataset
 - Use data in real time to output information to Magic Mirror Overlay
 
 ________________________________________________________________________
@@ -26,16 +26,24 @@ Potential Side Functions:
 - Clothing Suggestion based on weather feedback
 - Calendar expansion, displays future events on the mirror (e.g Dentist Appointment)
 - Horoscopes
+______________________________________________________________________________
 
+Packages Required to run this on Windows:
+
+openCV2
+dlib
+imutils
+
+*I suggest to use conda and pip to install required packages, also compile above Python 3.4
 ___________________________________________________________________________
 
 Libraries Included:
 
-OPEN CV by Intel
+OPENCV
 DLIB
+imutils pyvisionresearch
 MagicMirrorFramework
 raspberry pi camera module
-
 ______________________________________________________________________________
 
 Research based various Journal Papers:
