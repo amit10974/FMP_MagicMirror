@@ -1,0 +1,8 @@
+PiUI:
+ - http://blog.davidsingleton.org/introducing-piui/
+ - https://github.com/dps/piui
+
+Windows EDGE Hosted Web APP example and documents:
+
+ - https://microsoftedge.github.io/WebAppsDocs/en-US/win10/DeployToPiWithVS.htm
+ - https://github.com/MicrosoftEdge/WebAppsDocs
