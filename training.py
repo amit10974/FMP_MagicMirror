@@ -8,6 +8,7 @@
 from combo import getFaceCord
 import os
 import statistics
+import numpy as np
 
 #Source Location
 source_img = os.listdir("Material/attr/")
@@ -20,7 +21,7 @@ train_array = []
 #Loops through Images in Analysis Material Folder for attractive Females and passes it trhough getFaceCord()
 for x in source_img:
     print(x)
-    train_array.append(getFaceCord(source_path + x, "output_results/output " + ctr +".txt"))
+    train_array.append(getFaceCord(source_path + x, "output_results/output.txt"))
 
 #Taking gathered Coordinates and sorting them for Statistical Analysis Calculation
 x_arr = []
@@ -64,6 +65,17 @@ for x in y_arr:
 	average_sd_y.append(statistics.stdev(x))
 	average_mean_y.append(statistics.mean(x))
 	average_vari_y.append(statistics.variance(x))
+
+#Output Documents X
+np.savetxt("output_results/STDEV_X.txt", average_sd_x, fmt='%1.3f', delimiter='\t')
+np.savetxt("output_results/MEAN_X.txt", average_mean_x, fmt='%1.3f', delimiter='\t')
+np.savetxt("output_results/VARI_X.txt", average_vari_x, fmt='%1.3f', delimiter='\t')
+
+#Output Documents Y
+np.savetxt("output_results/STDEV_Y.txt", average_sd_y, fmt='%1.3f', delimiter='\t')
+np.savetxt("output_results/MEAN_Y.txt", average_mean_y, fmt='%1.3f', delimiter='\t')
+np.savetxt("output_results/VARI_Y.txt", average_vari_y, fmt='%1.3f', delimiter='\t')
+
 
 #Output
 print("")
