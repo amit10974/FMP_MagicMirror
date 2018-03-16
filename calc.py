@@ -8,6 +8,9 @@ import os
 import statistics
 import numpy as np
 
+#How many standard deviations from the mean counts as anomalous
+numStanDeviations = 2.0
+
 #X Data
 average_mean_x = []
 average_sd_x = []
@@ -55,17 +58,52 @@ for (x, y) in shape:
 pos = 0
 reps = len(X_CORD)
 
+anomalousPoints = 0
+
 while pos < reps:
-    z = (X_CORD[pos] - average_mean_x[pos]) / average_sd_x[pos]
-    pos = pos + 1
-    x_diff.append(z)
+	z = 0
+	if (average_sd_x[pos] == 0):
+		x_diff.append(z)
+		pos = pos + 1
+	else:
+		z = (X_CORD[pos] - average_mean_x[pos]) / average_sd_x[pos]
+		pos = pos + 1
+		x_diff.append(z)
+
+	#Calculated number of SDs from mean
+	#Make this greater than zero
+	
+	if (z < 0):
+		z = z* -1	
+		
+	#Is this value more than our threshold in terms of SDs
+	#print("Z: " + str(z) + " num SDs " + str(numStanDeviations))
+	if (z > numStanDeviations):
+		anomalousPoints = anomalousPoints + 1
 
 pos = 0
 
 while pos < reps:
-    z = (Y_CORD[pos] - average_mean_y[pos]) / average_sd_y[pos]
-    pos = pos + 1
-    y_diff.append(z)
+	z = 0
+	if (average_sd_y[pos] == 0):
+		y_diff.append(z)
+		pos = pos + 1
+	else:
+		z = (Y_CORD[pos] - average_mean_y[pos]) / average_sd_y[pos]
+		pos = pos + 1
+		y_diff.append(z)
+	
+	#Calculated number of SDs from mean
+	#Make this greater than zero
+	if (z < 0):
+		z = z* -1	
+		
+	#Is this value more than our threshold in terms of SDs
+	if (z > numStanDeviations):
+		anomalousPoints = anomalousPoints + 1
+			
+#Output anomalous point count	
+print("Anomalous point count: " + str(anomalousPoints))	
 
 np.savetxt("output_results/Measure_X.txt", x_diff, fmt='%1.3f', delimiter='\t')
 np.savetxt("output_results/Measure_Y.txt", y_diff, fmt='%1.3f', delimiter='\t')
