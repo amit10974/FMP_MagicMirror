@@ -1,5 +1,5 @@
 #Code by Reday Yahya
-#23/02/2018
+#19/03/2018
 #Facial Landmark detection using OpenCV, DLIB with added help of imageutilities by pyimageresearch
 #Master File
 
@@ -9,6 +9,7 @@
 from imutils.face_utils import FaceAligner
 from imutils.face_utils import rect_to_bb
 from imutils import face_utils
+from take_image import takeIMG
 from picamera import PiCamera
 from time import sleep
 import os
@@ -18,13 +19,9 @@ import imutils
 import dlib
 import cv2
 
-#This bit is to take Images and to set Image
-camera = PiCamera()
-camera.start_preview()
-sleep(10) #timer for how long until image is taken
-camera.capture('/Material/user/image.jpg')
-camera.stop_preview()
-source_image = "/Material/user/image.jpg"
+takeIMG()
+
+source_image = "Material/user/user.jpg"
 
 #DLIB face detectore with facial landmark predictor
 detector = dlib.get_frontal_face_detector()
@@ -64,8 +61,6 @@ np.savetxt("output_results/output.txt", shape, fmt='%10.f', delimiter='\t')
 y = np.loadtxt("output_results/output.txt")
 print(y)
 
-#Standard Deviation Test
-
 cv2.imshow("Output", image)
 
 cv2.waitKey(0)
@@ -84,7 +79,7 @@ average_sd_y = []
 average_vari_y = []
 
 #shape coordinates
-# shape = []
+shape = []
 X_CORD = []
 Y_CORD = []
 
@@ -103,7 +98,7 @@ average_sd_y = np.loadtxt("output_results/STDEV_Y.txt")
 average_vari_y = np.loadtxt("output_results/VARI_Y.txt")
 
 #Load shape
-# shape = np.loadtxt("output_results/output.txt")
+shape = np.loadtxt("output_results/output.txt")
 
 for (x, y) in shape:
     X_CORD.append(x)
@@ -131,7 +126,7 @@ while pos < reps:
 		z = z* -1	
 		
 	#Is this value more than our threshold in terms of SDs
-	#print("Z: " + str(z) + " num SDs " + str(numStanDeviations))
+	print("X Value Z: " + str(z) + " num SDs " + str(numStanDeviations))
 	if (z > numStanDeviations):
 		anomalousPoints = anomalousPoints + 1
 		# cordIndex = X_CORD.index(X_CORD[pos]) - 1
@@ -157,6 +152,7 @@ while pos < reps:
 		z = z* -1	
 		
 	#Is this value more than our threshold in terms of SDs
+	print("Y Value Z: " + str(z) + " num SDs " + str(numStanDeviations))
 	if (z > numStanDeviations):
 		anomalousPoints = anomalousPoints + 1
 		# cordIndex = Y_CORD.index(Y_CORD[pos])
@@ -177,50 +173,50 @@ print()
 print()
 print()
 
-# np.savetxt("output_results/Measure_X.txt", x_diff, fmt='%1.3f', delimiter='\t')
-# np.savetxt("output_results/Measure_Y.txt", y_diff, fmt='%1.3f', delimiter='\t')
+np.savetxt("output_results/Measure_X.txt", x_diff, fmt='%1.3f', delimiter='\t')
+np.savetxt("output_results/Measure_Y.txt", y_diff, fmt='%1.3f', delimiter='\t')
 
 #Output
-# print("")
-# print("STDEV for X coordinates")
-# print(average_sd_x)
+#print("")
+#print("STDEV for X coordinates")
+#print(average_sd_x)
 
-# print(" ")
-# print("Mean for X coordinates")
-# print(average_mean_x)
+#print(" ")
+#print("Mean for X coordinates")
+#print(average_mean_x)
 
-# print(" ")
-# print("variance for X coordinates")
-# print(average_vari_x)
+#print(" ")
+#print("variance for X coordinates")
+#print(average_vari_x)
 
-# print(" ")
-# print("STDEV for Y coordinates")
-# print(average_sd_y)
+#print(" ")
+#print("STDEV for Y coordinates")
+#print(average_sd_y)
 
-# print(" ")
-# print("Mean for Y coordinates")
-# print(average_mean_y)
+#print(" ")
+#print("Mean for Y coordinates")
+#print(average_mean_y)
 
-# print(" ")
-# print("variance for Y coordinates")
-# print(average_vari_y)
+#print(" ")
+#print("variance for Y coordinates")
+#print(average_vari_y)
 
-# print(" ")
-# print("Coordinate Array")
-# print(shape)
+#print(" ")
+#rint("Coordinate Array")
+#print(shape)
 
-# print(" ")
-# print("X Array")
-# print(X_CORD)
+#print(" ")
+#print("X Array")
+#print(X_CORD)
 
-# print(" ")
-# print("Y Array")
-# print(Y_CORD)
+#print(" ")
+#print("Y Array")
+#print(Y_CORD)
 
-# print(" ")
-# print("difference Array X")
-# print(x_diff)
+#print(" ")
+#print("difference Array X")
+#print(x_diff)
 
-# print(" ")
-# print("difference Array Y")
-# print(y_diff)
+#print(" ")
+#print("difference Array Y")
+#print(y_diff)

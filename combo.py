@@ -11,8 +11,8 @@ import numpy as np
 import imutils
 import dlib
 import cv2
-import os
 import statistics
+
 
 def getFaceCord( input_image, output_file ):
 
