@@ -28,6 +28,11 @@ detector = dlib.get_frontal_face_detector()
 predictor = dlib.shape_predictor("facerec.dat")
 fa = FaceAligner(predictor, desiredFaceWidth=256)
 
+#DLIB face detectore with facial landmark predictor
+detector = dlib.get_frontal_face_detector()
+predictor = dlib.shape_predictor("facerec.dat")
+fa = FaceAligner(predictor, desiredFaceWidth=256)
+
 #Load Input
 al_image = cv2.imread(args["image"])
 al_image = imutils.resize(al_image, width = 800)
@@ -43,8 +48,7 @@ for rect in al_rects:
  
 
 #now that we have the fixed image, lets get our facial landmarks
-cv2.imwrite("user.jpg",faceAligned)
-image = cv2.imread("user.jpg")
+image = faceAligned
 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 rects = detector(gray, 1)
 
@@ -62,8 +66,117 @@ np.savetxt("output_results/output.txt", shape, fmt='%10.f', delimiter='\t')
 y = np.loadtxt("output_results/output.txt")
 print(y)
 
-    #Standard Deviation Test
-
 cv2.imshow("Output", image)
 
 cv2.waitKey(0)
+
+#How many standard deviations from the mean counts as anomalous
+numStanDeviations = 1.6
+
+#X Data
+average_mean_x = []
+average_sd_x = []
+average_vari_x = []
+
+#Y Data
+average_mean_y = []
+average_sd_y = []
+average_vari_y = []
+
+#shape coordinates
+shape = []
+X_CORD = []
+Y_CORD = []
+
+#Calculation output
+x_diff = []
+y_diff = []
+
+#Load for X
+average_mean_x = np.loadtxt("output_results/MEAN_X.txt")
+average_sd_x = np.loadtxt("output_results/STDEV_X.txt")
+average_vari_x = np.loadtxt("output_results/VARI_X.txt")
+
+#Load for Y
+average_mean_y = np.loadtxt("output_results/MEAN_Y.txt")
+average_sd_y = np.loadtxt("output_results/STDEV_Y.txt")
+average_vari_y = np.loadtxt("output_results/VARI_Y.txt")
+
+#Load shape
+shape = np.loadtxt("output_results/output.txt")
+
+for (x, y) in shape:
+    X_CORD.append(x)
+    Y_CORD.append(y)
+
+#Var for loop
+pos = 0
+reps = len(X_CORD)
+anomalousPoints = 0
+
+#looping through for difference X
+while pos < reps:
+	z = 0
+	if (average_sd_x[pos] == 0):
+		x_diff.append(z)
+		pos = pos + 1
+	else:
+		z = (X_CORD[pos] - average_mean_x[pos]) / average_sd_x[pos]
+		pos = pos + 1
+		x_diff.append(z)
+
+	#Calculated number of SDs from mean
+	#Make this greater than zero
+	if (z < 0):
+		z = z* -1	
+		
+	#Is this value more than our threshold in terms of SDs
+	#print("X Value Z: " + str(z) + " num SDs " + str(numStanDeviations))
+	if (z > numStanDeviations):
+		anomalousPoints = anomalousPoints + 1
+		# cordIndex = X_CORD.index(X_CORD[pos]) - 1
+		# print ("Location of coordinate " + str(cordIndex)  + " Coordinate: " + str(X_CORD[pos]))
+
+#reseting loop counter
+pos = 0
+
+#looping through for difference X
+while pos < reps:
+	z = 0
+	if (average_sd_y[pos] == 0):
+		y_diff.append(z)
+		pos = pos + 1
+	else:
+		z = (Y_CORD[pos] - average_mean_y[pos]) / average_sd_y[pos]
+		pos = pos + 1
+		y_diff.append(z)
+	
+	#Calculated number of SDs from mean
+	#Make this greater than zero
+	if (z < 0):
+		z = z* -1	
+		
+	#Is this value more than our threshold in terms of SDs
+	#print("Y Value Z: " + str(z) + " num SDs " + str(numStanDeviations))
+	if (z > numStanDeviations):
+		anomalousPoints = anomalousPoints + 1
+		# cordIndex = Y_CORD.index(Y_CORD[pos])
+		# print ("Location of coordinate " + str(cordIndex)  + " Coordinate: " + str(Y_CORD[pos]))
+			
+#Output anomalous point count	
+print("Anomalous point count: " + str(anomalousPoints))	
+
+#Calculation for difference procentage
+
+FINALVAL = 100 - (anomalousPoints * 100 / 136)
+print()
+print()
+print()
+print("Hmmmm I shall see....")
+print(".....You are only " + str(FINALVAL) + " % close to the fairest in the land")
+print()
+print()
+print()
+
+np.savetxt("output_results/Measure_X.txt", x_diff, fmt='%1.3f', delimiter='\t')
+np.savetxt("output_results/Measure_Y.txt", y_diff, fmt='%1.3f', delimiter='\t')
